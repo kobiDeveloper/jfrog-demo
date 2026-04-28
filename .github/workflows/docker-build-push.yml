@@ -1,0 +1,33 @@
+name: Build and Push Docker Image to JFrog
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  JFROG_REGISTRY: triallgh522.jfrog.io
+  IMAGE_NAME: docker-local/jfrog-demo
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Login to JFrog Docker Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.JFROG_REGISTRY }}
+          username: ${{ secrets.JFROG_USERNAME }}
+          password: ${{ secrets.JFROG_ACCESS_TOKEN }}
+
+      - name: Build Docker image
+        run: |
+          docker build -t $JFROG_REGISTRY/$IMAGE_NAME:${{ github.sha }} .
+
+      - name: Push Docker image
+        run: |
+          docker push $JFROG_REGISTRY/$IMAGE_NAME:${{ github.sha }}

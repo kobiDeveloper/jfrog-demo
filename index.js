@@ -1,0 +1,5 @@
+const http = require('http');
+
+http.createServer((req, res) => {
+  res.end("Hello from JFrog DevOps flow-v2");
+}).listen(3000);
