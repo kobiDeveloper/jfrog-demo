@@ -25,11 +25,7 @@ jobs:
           password: ${{ secrets.JFROG_ACCESS_TOKEN }}
 
       - name: Build Docker image
-        run: |
-          -t $JFROG_REGISTRY/$IMAGE_NAME:${{ github.sha }} \
-          -t $JFROG_REGISTRY/$IMAGE_NAME:latest \
-          -t $JFROG_REGISTRY/$IMAGE_NAME:dev \
-          .
+        run: docker build -t $JFROG_REGISTRY/$IMAGE_NAME:${{ github.sha }} -t $JFROG_REGISTRY/$IMAGE_NAME:latest -t $JFROG_REGISTRY/$IMAGE_NAME:dev .
 
       - name: Push Docker image
         run: |
